@@ -6,6 +6,7 @@
 import re
 
 from lxml import etree, html
+from markupsafe import Markup
 
 from odoo import api, models
 
@@ -48,7 +49,7 @@ class MailRenderMixin(models.AbstractModel):
             )
             if to_keep:
                 value = value.replace("<body_msg></body_msg>", to_keep)
-        return value
+        return Markup(value)
 
     @api.model
     def _render_template(
@@ -95,4 +96,4 @@ class MailRenderMixin(models.AbstractModel):
         message = re.sub(
             r"""(Powered by\s(.*)Odoo</a>)""", "<div>&nbsp;</div>", message
         )
-        return message
+        return Markup(message)
